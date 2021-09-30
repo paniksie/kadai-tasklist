@@ -51,6 +51,6 @@ end
   private
 
   # Strong Parameter
-  def message_params
+  def task_params
     params.require(:task).permit(:content)
   end
