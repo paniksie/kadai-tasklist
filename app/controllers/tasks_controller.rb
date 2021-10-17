@@ -1,7 +1,6 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
-  before_action :correct_user, only: [:destroy]
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:show, :edit, :update, :destroy]
   
   def index
     @task = current_user.tasks.build  # form_with 用
@@ -12,7 +11,7 @@ class TasksController < ApplicationController
   end
   
   def new
-    @task = Task.new
+    @task = current_user.tasks.build
   end
 
   def create 
@@ -24,7 +23,7 @@ class TasksController < ApplicationController
     else
       @pagy, @tasks = pagy(current_user.tasks.order(id: :desc))
       flash.now[:danger] = 'Task が投稿されませんでした'
-      render :new
+      render root_path
     end
   end
 
@@ -34,10 +33,10 @@ class TasksController < ApplicationController
   def update
     if @task.update(task_params)
       flash[:success] = 'Task が正常に更新されました'
-      redirect_to @task
+      redirect_to root_path
     else
       flash.now[:danger] = 'Task が更新されませんでした'
-      render :new
+      render root_path
     end
   end
 
@@ -49,10 +48,6 @@ class TasksController < ApplicationController
   end
   
   private
-  
-  def set_task
-    @task = Task.find(params[:id])
-  end
 
   # Strong Parameter
   def task_params
