@@ -23,7 +23,7 @@ class TasksController < ApplicationController
     else
       @pagy, @tasks = pagy(current_user.tasks.order(id: :desc))
       flash.now[:danger] = 'Task が投稿されませんでした'
-      render root_path
+      render :new
     end
   end
 
@@ -36,7 +36,7 @@ class TasksController < ApplicationController
       redirect_to root_path
     else
       flash.now[:danger] = 'Task が更新されませんでした'
-      render root_path
+      render :new
     end
   end
 
